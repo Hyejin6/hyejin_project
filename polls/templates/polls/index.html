@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} polls {% endblock %}
+{% block content %}
+{% if latest_question_list %} <!-- latest_question_list에 무엇이라도 있다면 아래 실행 -->
+    <ul>
+        {% for question in latest_question_list %}
+            <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a> </li> <!-- 질문 항목들이 하나씩 들어옴 -->
+        {% endfor %}
+    </ul>
+{% else %} <!--  latest_question_list에 아무것도 없다면 아래 실행 -->
+    <p>No polls are available.</p>
+{% endif %}
+{% endblock %}

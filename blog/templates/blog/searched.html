@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Blog {% endblock %}
+{% block content %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <!-- 디자인 변경 - 부트스트랩 -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstraptheme.min.css">
+
+    <!-- 디자인 변경 - 정적파일 style 적용 -->
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+
+    <!-- 글꼴 변경1 영어 -->
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <!-- 글꼴 변경2 한글 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+    {% if user.is_authenticated %} <!-- 로그인 한 사람만 보이게 하기 -->
+        <a href="{% url 'blog:post_new' %}" class="top-menu"> <span class="glyphicon glyphicon-plus"></span> </a> <!-- 글추가 아이콘 생성 -->
+    {% endif %}
+    <h1><a href="{% url 'blog:post_list' %}">Hyejin's Blog</a> </h1>
+    </div>
+
+    {% if searched %}
+        <h1> 검색하신 '{{ searched }}'에 대한 결과입니다. </h1>
+        <br>
+        {% for post in posts %}
+            작성자 : {{ post.author }} <br>
+            제목 : {{ post.title }} <br>
+            내용 : {{ post.text }} <br>
+            {% empty %}
+            <h1> 일치하는 결과가 없습니다. </h1>
+        {% endfor %}
+    {% else %}
+        <h1> 키워드를 검색창에 입력해주세요. </h1>
+    {% endif %}
+
+    <!-- 다시 검색하고 싶을때 -->
+    <p></p>
+    <a class="btn btn-default" href="{% url 'blog:post_list'%}"><span class="glyphicon glyphicon-repeat"></span> </a>
+{% endblock %}
+</body>

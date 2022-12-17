@@ -1,0 +1,15 @@
+{% extends 'base.html' %} <!-- base.html을 상속 -->
+{% block title %} Bookmark Detail {% endblock %}
+
+{% block content %}
+<!-- 북마크 확인 기능 구현 -->
+{{ object.site_name }}<br/>
+{{ object.url }}
+
+<p></p>
+<tr>
+    <td><a href="{% url 'bookmark:update' pk=bookmark.id %}" class="btn btn-success btn-sm">Modify</a> </td>
+    <td><a href="{% url 'bookmark:delete' pk=bookmark.id %}" class="btn btn-danger btn-sm">Delete</a> </td>
+</tr>
+
+{% endblock %}

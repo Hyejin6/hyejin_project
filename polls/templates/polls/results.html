@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} polls_results {% endblock %}
+{% block content %}
+<h1> {{question.question_text}} </h1> <!-- 질문 보여주기 -->
+    <ul>
+        {% for choice in question.choice_set.all %} <!-- 반복문 - 전체 답변항목들을 하나씩 출력 -->
+        <!-- 답변과 선택 갯수 보여주기 / pluralize : 복수일경우 표시되게  -->
+        <li>{{choice.choice_text}} -- {{choice.votes}} vote{{choice.votes|pluralize}}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'polls:detail' question.id %}">Vote again?</a> <!-- 상세화면으로 이동 -->
+    <p></p>
+    <a href="{% url 'polls:chart' question.id %}">Chart View</a> <!-- 차트로 이동 -->
+    <p></p>
+    <a href="{% url 'polls:index' %}">▶ polls 목록으로</a> <!-- 투표목록으로 이동 -->
+    <p></p>
+    <a class="btn btn-danger btn-sm" href="{% url 'polls:delete' question.id %}">X 삭제하기</a>
+
+{% endblock %}
+

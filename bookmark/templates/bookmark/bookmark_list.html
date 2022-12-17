@@ -1,0 +1,67 @@
+{% extends 'base.html' %} <!-- base.html을 상속 -->
+{% block title %} Bookmark List {% endblock %}
+
+{% block content %}
+<div class = "btn-group">
+    <a href="{% url 'bookmark:add' %}" class="btn btn-info">Add Bookmark</a> <!-- 북마크 추가하기 링크 생성 -->
+</div>
+<p></p>
+<table class="table"> <!-- 북마크 목록을 출력하기 위해 table 태그 이용 -->
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Site</th>
+        <th scope="col">URL</th>
+        <th scope="col">Modify</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for bookmark in object_list %} <!-- # 제너릭뷰에서는 모델의 오브젝트가 여러개일 경우, object_list라는 변수로 전달 /
+    object_list에서 bookmark라는 이름으로 북마크를 하나씩 꺼내 북마크 당 한줄씩 출력한 것 -->
+    <tr> <!-- # 한 북마크는 tr 태그로 묶음 -->
+        <td> {{ forloop.counter }} </td> <!-- forloop으로 하나씩 증가 -->
+        <!-- # 각각의 북마크를 출력할때 사이트이름 url 등을 출력하고 수정버튼과 삭제 버튼 생성 -->
+        <td><a href="{% url 'bookmark:detail' pk=bookmark.id %}">{{ bookmark.site_name }}</a> </td>
+        <td><a href="{{bookmark.url}}" target="_blank">{{bookmark.url}}</a> </td>
+        <td><a href="{% url 'bookmark:update' pk=bookmark.id %}" class="btn btn-success btn-sm">Modify</a> </td>
+        <td><a href="{% url 'bookmark:delete' pk=bookmark.id %}" class="btn btn-danger btn-sm">Delete</a> </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+<!-- 페이징 기능 -->
+{% block pagination %}
+    {% if is_paginated %}
+    <ul class="pagination justify-content-center pagination-sm">
+        {% if page_obj.has_previous %} <!-- 이전 페이지가 존재할 때 -->
+            <li class="page-item">
+                <a class="page-link" href="{% url 'bookmark:list' %}?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"> <!-- 이전 페이지가 존재하지 않을 때 버튼 비활성화 -->
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for object in page_obj.paginator.page_range %} <!-- 반복 - 전체 페이지 번호만큼 -->
+            <li class="page-item {% if page_obj.number == forloop.counter %}disabled{% endif %}">
+                <a class="page-link" href="{{ request.path }}?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+            </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %} <!-- 다음 페이지가 존재할 때 -->
+            <li class="page-item">
+                <a class="page-link" href="{% url 'bookmark:list' %}?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"> <!-- 다음 페이지가 존재하지 않을 때 버튼 비활성화 -->
+                <a class="page-link" href="#">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+body {
+    background : white url("img/bg.png") no-repeat;
+    background-position : center bottom;
+    background-size : 15%;
+    height : 500px;
+    border-top : 10px solid #ccc;
+    padding-left : 30px;
+    padding-right : 30px;
+}
+
+title {
+    color : #c80;
+    font-weight : bold;
+}
+
+li a {
+ color : green;
+}
